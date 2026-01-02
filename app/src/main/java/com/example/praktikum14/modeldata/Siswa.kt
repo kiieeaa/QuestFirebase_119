@@ -1,14 +1,14 @@
 package com.example.praktikum14.modeldata
 
 data class Siswa(
-    val id: String = "", // Ubah dari Long ke String
+    val id: String = "", 
     val nama: String = "",
     val alamat: String = "",
     val telpon: String = ""
 )
 
 data class DetailSiswa(
-    val id: String = "", // Ubah dari Long ke String
+    val id: String = "", 
     val nama: String = "",
     val alamat: String = "",
     val telpon: String = ""
