@@ -39,4 +39,14 @@ class EditViewModel(
         }
     }
 
+    fun updateSiswa() {
+        viewModelScope.launch {
+            if (validasiInput(uiStateSiswa.detailSiswa)) {
+
+                repositorySiswa.postDataSiswa(uiStateSiswa.detailSiswa.toDataSiswa())
+            }
+        }
+    }
 }
+
+
