@@ -41,4 +41,18 @@ class DetailViewModel(
         }
     }
 
+    fun deleteSiswa() {
+        viewModelScope.launch {
+            try {
+                val currentSiswa = (detailUiState as? DetailUiState.Success)?.siswa
+                if (currentSiswa != null) {
+                    repositorySiswa.deleteSiswa(currentSiswa)
+                }
+            } catch (e: Exception) {
+                detailUiState = DetailUiState.Error
+            }
+        }
+    }
 }
+
+
