@@ -63,3 +63,34 @@ fun DetailSiswaScreen(
             )
         },
         floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    val state = viewModel.detailUiState
+                    if (state is DetailUiState.Success) {
+                        navigateToEditItem(state.siswa.id)
+                    }
+                },
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = stringResource(R.string.edit_siswa)
+                )
+            }
+        }
+    ) { innerPadding ->
+        DetailBody(
+            detailUiState = viewModel.detailUiState,
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxWidth(),
+            onDelete = {
+                viewModel.deleteSiswa()
+                navigateBack()
+            }
+        )
+    }
+}
+        }
+
