@@ -40,6 +40,7 @@ import com.example.praktikum14.viewmodel.HomeViewModel
 import com.example.praktikum14.viewmodel.PenyediaViewModel
 import com.example.praktikum14.viewmodel.StatusUiSiswa
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -56,7 +57,10 @@ fun HomeScreen(
             SiswaTopAppBar(
                 title = stringResource(DestinasiHome.titleRes),
                 canNavigateBack = false,
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
+                onRefresh = {
+                    viewModel.loadSiswa()
+                }
             )
         },
         floatingActionButton = {
@@ -78,108 +82,5 @@ fun HomeScreen(
             modifier = Modifier.padding(innerPadding),
             onDetailClick = onDetailClick
         )
-    }
-}
-
-@Composable
-fun HomeStatus(
-    statusUiSiswa: StatusUiSiswa,
-    retryAction: () -> Unit,
-    modifier: Modifier = Modifier,
-    onDetailClick: (String) -> Unit
-) {
-    when (statusUiSiswa) {
-        is StatusUiSiswa.Loading -> OnLoading(modifier = modifier.fillMaxSize())
-        is StatusUiSiswa.Success -> {
-            if (statusUiSiswa.siswa.isEmpty()) {
-                Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = "Tidak ada data Siswa" )
-                }
-            } else {
-                SiswaLayout(
-                    siswa = statusUiSiswa.siswa,
-                    modifier = modifier.fillMaxWidth(),
-                    onDetailClick = {
-                        onDetailClick(it.id.toString())
-                    }
-                )
-            }
-        }
-        is StatusUiSiswa.Error -> OnError(retryAction, modifier = modifier.fillMaxSize())
-    }
-}
-
-@Composable
-fun OnLoading(modifier: Modifier = Modifier) {
-    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("Loading...")
-    }
-}
-
-@Composable
-fun OnError(retryAction: () -> Unit, modifier: Modifier = Modifier) {
-    Column(modifier = modifier, verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("Error loading data")
-        Button(onClick = retryAction) { Text("Retry") }
-    }
-}
-
-@Composable
-fun SiswaLayout(
-    siswa: List<Siswa>,
-    modifier: Modifier = Modifier,
-    onDetailClick: (Siswa) -> Unit
-) {
-    LazyColumn(
-        modifier = modifier,
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        items(siswa) { contact ->
-            SiswaCard(
-                siswa = contact,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onDetailClick(contact) }
-            )
-        }
-    }
-}
-
-@Composable
-fun SiswaCard(
-    siswa: Siswa,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier,
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = siswa.nama,
-                    style = MaterialTheme.typography.titleLarge,
-                )
-                Spacer(Modifier.weight(1f))
-                Icon(
-                    imageVector = Icons.Default.Home,
-                    contentDescription = null,
-                )
-            }
-            Text(
-                text = siswa.telpon,
-                style = MaterialTheme.typography.titleMedium
-            )
-            Text(
-                text = siswa.alamat,
-                style = MaterialTheme.typography.titleMedium
-            )
-        }
     }
 }
