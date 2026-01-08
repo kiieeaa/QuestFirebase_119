@@ -17,3 +17,10 @@ sealed interface DetailUiState {
     object Error : DetailUiState
     object Loading : DetailUiState
 }
+
+class DetailViewModel(
+    savedStateHandle: SavedStateHandle,
+    private val repositorySiswa: RepositorySiswa
+) : ViewModel() {
+
+}
