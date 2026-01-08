@@ -31,5 +31,24 @@ fun HostNavigasi(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
+    NavHost(
+        navController = navController,
+        startDestination = DestinasiHome.route, // Menentukan halaman awal aplikasi
+        modifier = modifier
+    ) {
+        composable(DestinasiHome.route) {
+            HomeScreen(
+                navigateToItemEntry = { navController.navigate(DestinasiEntry.route) },
+                onDetailClick = {
+                    navController.navigate("${DestinasiDetail.route}/$it")
+                }
+            )
+        }
 
-}
+
+
+
+
+
+
+
