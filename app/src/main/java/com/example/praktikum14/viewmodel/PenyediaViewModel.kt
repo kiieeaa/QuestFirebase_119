@@ -9,5 +9,30 @@ import com.example.praktikum14.repositori.AplikasiDataSiswa
 
 
 object PenyediaViewModel {
-
+    val Factory = viewModelFactory {
+        initializer {
+            HomeViewModel(aplikasiDataSiswa().container.repositorySiswa)
+        }
+        initializer {
+            EntryViewModel(aplikasiDataSiswa().container.repositorySiswa)
+        }
+        initializer {
+            DetailViewModel(
+                createSavedStateHandle(),
+                aplikasiDataSiswa().container.repositorySiswa
+            )
+        }
+        initializer {
+            EditViewModel(
+                createSavedStateHandle(),
+                aplikasiDataSiswa().container.repositorySiswa
+            )
+        }
+    }
 }
+fun CreationExtras.aplikasiDataSiswa(): AplikasiDataSiswa =
+    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as AplikasiDataSiswa)
+
+
+
+
