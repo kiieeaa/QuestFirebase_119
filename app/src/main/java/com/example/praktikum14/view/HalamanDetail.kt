@@ -92,5 +92,30 @@ fun DetailSiswaScreen(
         )
     }
 }
+@Composable
+fun ItemDetailSiswa(
+    siswa: Siswa,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(id = R.dimen.padding_medium)),
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
+        ) {
+            ComponentDetailSiswa(label = stringResource(R.string.nama), value = siswa.nama)
+            ComponentDetailSiswa(label = stringResource(R.string.alamat), value = siswa.alamat)
+            ComponentDetailSiswa(label = stringResource(R.string.telpon), value = siswa.telpon)
         }
+    }
+}
+
+
 
