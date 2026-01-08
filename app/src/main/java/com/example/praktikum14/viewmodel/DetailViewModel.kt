@@ -26,5 +26,19 @@ class DetailViewModel(
     private val _idSiswa: String = checkNotNull(savedStateHandle[DestinasiDetail.itemIdArg])
     var detailUiState: DetailUiState by mutableStateOf(DetailUiState.Loading)
         private set
+    init {
+        getSiswaById()
+    }
+    fun getSiswaById() {
+        viewModelScope.launch {
+            detailUiState = DetailUiState.Loading
+            detailUiState = try {
+                val siswa = repositorySiswa.getSiswaById(_idSiswa)
+                DetailUiState.Success(siswa)
+            } catch (e: Exception) {
+                DetailUiState.Error
+            }
+        }
+    }
 
 }
