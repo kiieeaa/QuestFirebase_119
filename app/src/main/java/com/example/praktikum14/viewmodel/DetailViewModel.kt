@@ -24,5 +24,7 @@ class DetailViewModel(
 ) : ViewModel() {
 
     private val _idSiswa: String = checkNotNull(savedStateHandle[DestinasiDetail.itemIdArg])
+    var detailUiState: DetailUiState by mutableStateOf(DetailUiState.Loading)
+        private set
 
 }
