@@ -25,5 +25,27 @@ fun SiswaTopAppBar(
     navigateUp: () -> Unit = {},
     onRefresh: (() -> Unit)? = null // Parameter opsional untuk menampilkan tombol refresh
 ) {
+    CenterAlignedTopAppBar(
+        title = { Text(title) },
+        modifier = modifier,
+        scrollBehavior = scrollBehavior,
+        navigationIcon = {
+            // Icon navigasi back hanya ditampilkan jika canNavigateBack bernilai true
+            if (canNavigateBack) {
+                IconButton(onClick = navigateUp) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.back)
+                    )
+                }
+            }
+        },
 
-}
+
+
+
+
+
+
+
+
