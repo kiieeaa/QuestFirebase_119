@@ -41,7 +41,8 @@ import com.example.praktikum14.viewmodel.DetailUiState
 import com.example.praktikum14.viewmodel.DetailViewModel
 import com.example.praktikum14.viewmodel.PenyediaViewModel
 
-
+// DetailSiswaScreen merupakan composable utama untuk menampilkan detail data siswa
+// serta menyediakan navigasi kembali dan tombol edit data.
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailSiswaScreen(
@@ -63,6 +64,7 @@ fun DetailSiswaScreen(
             )
         },
         floatingActionButton = {
+            // FloatingActionButton digunakan untuk navigasi ke halaman edit siswa
             FloatingActionButton(
                 onClick = {
                     val state = viewModel.detailUiState
@@ -92,6 +94,53 @@ fun DetailSiswaScreen(
         )
     }
 }
+
+// DetailBody menampilkan isi halaman berdasarkan state data (Loading, Error, atau Success)
+@Composable
+fun DetailBody(
+    detailUiState: DetailUiState,
+    modifier: Modifier = Modifier,
+    onDelete: () -> Unit
+) {
+    Column(
+        modifier = modifier.padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        when (detailUiState) {
+            is DetailUiState.Loading -> Text("Loading...")
+            is DetailUiState.Error -> Text("Error data tidak ditemukan")
+            is DetailUiState.Success -> {
+                ItemDetailSiswa(
+                    siswa = detailUiState.siswa,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.padding(8.dp))
+
+                // State untuk mengontrol dialog konfirmasi hapus data
+                var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
+
+                OutlinedButton(
+                    onClick = { deleteConfirmationRequired = true },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(stringResource(R.string.delete))
+                }
+
+                if (deleteConfirmationRequired) {
+                    DeleteConfirmationDialog(
+                        onDeleteConfirm = {
+                            deleteConfirmationRequired = false
+                            onDelete()
+                        },
+                        onDeleteCancel = { deleteConfirmationRequired = false }
+                    )
+                }
+            }
+        }
+    }
+}
+
+// ItemDetailSiswa berfungsi menampilkan informasi detail siswa dalam bentuk Card
 @Composable
 fun ItemDetailSiswa(
     siswa: Siswa,
@@ -117,6 +166,7 @@ fun ItemDetailSiswa(
     }
 }
 
+// ComponentDetailSiswa digunakan sebagai komponen reusable untuk menampilkan label dan nilai data siswa
 @Composable
 fun ComponentDetailSiswa(
     label: String,
@@ -142,5 +192,21 @@ private fun DeleteConfirmationDialog(
     onDeleteCancel: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-
+    // Dialog konfirmasi untuk memastikan pengguna yakin sebelum menghapus data siswa
+    AlertDialog(
+        onDismissRequest = { /* Do nothing */ },
+        title = { Text(stringResource(R.string.attention)) },
+        text = { Text(stringResource(R.string.delete)) },
+        modifier = modifier,
+        dismissButton = {
+            TextButton(onClick = onDeleteCancel) {
+                Text(text = stringResource(R.string.no))
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDeleteConfirm) {
+                Text(text = stringResource(R.string.yes))
+            }
+        }
+    )
+}
