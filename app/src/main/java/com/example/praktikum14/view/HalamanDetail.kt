@@ -117,5 +117,30 @@ fun ItemDetailSiswa(
     }
 }
 
+@Composable
+fun ComponentDetailSiswa(
+    label: String,
+    value: String,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelMedium
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
+private fun DeleteConfirmationDialog(
+    onDeleteConfirm: () -> Unit,
+    onDeleteCancel: () -> Unit,
+    modifier: Modifier = Modifier
+) {
 
 
