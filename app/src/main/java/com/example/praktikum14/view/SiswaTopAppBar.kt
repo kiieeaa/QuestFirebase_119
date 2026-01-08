@@ -40,6 +40,19 @@ fun SiswaTopAppBar(
                 }
             }
         },
+        actions = {
+
+            if (onRefresh != null) {
+                IconButton(onClick = onRefresh) {
+                    Icon(
+                        imageVector = Icons.Default.Refresh,
+                        contentDescription = "Refresh"
+                    )
+                }
+            }
+        }
+    )
+}
 
 
 
